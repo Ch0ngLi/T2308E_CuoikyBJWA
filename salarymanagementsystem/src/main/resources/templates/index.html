@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Salary Management System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Salary Management System</h2>
+
+    <!-- Thông báo thành công hoặc lỗi -->
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <!-- Form thêm hoặc sửa nhân viên -->
+    <form th:action="@{/save}" method="post" th:object="${employee}">
+        <input type="hidden" th:field="*{id}" />
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="Enter name" required />
+        </div>
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" th:field="*{age}" class="form-control" placeholder="Enter age" required />
+        </div>
+        <div class="form-group">
+            <label for="salary">Salary</label>
+            <input type="number" th:field="*{salary}" class="form-control" placeholder="Enter salary" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Add/Update</button>
+        <a href="/" class="btn btn-warning">Reset Form</a>
+    </form>
+
+    <hr/>
+    <h4>List of Employees</h4>
+
+    <!-- Form tìm kiếm nhân viên -->
+    <form class="form-inline mb-2" method="get" action="/">
+        <input type="text" name="keyword" class="form-control mr-2" placeholder="Search by name" />
+        <button class="btn btn-outline-primary">Search</button>
+    </form>
+
+    <!-- Bảng hiển thị danh sách nhân viên -->
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Salary</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="emp : ${listEmployees}">
+            <td th:text="${emp.id}"></td>
+            <td th:text="${emp.name}"></td>
+            <td th:text="${emp.age}"></td>
+            <td th:text="${emp.salary}"></td>
+            <td>
+                <a th:href="@{'/edit/' + ${emp.id}}" class="btn btn-success btn-sm">Edit</a>
+                <a th:href="@{'/delete/' + ${emp.id}}" class="btn btn-danger btn-sm">Remove</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
